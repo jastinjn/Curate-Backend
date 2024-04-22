@@ -294,8 +294,9 @@ def get_medications(name: str, llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temp
     source_indices = [med["source_id"] for med in response["answer"]["medications"]]
 
     for idx, source_index in enumerate(source_indices):
-        path = response["context2"][source_index].metadata['file_path']
-        response["answer"]["medications"][idx]["source_path"] = path
+        if source_index is not None:
+            path = response["context2"][source_index].metadata['file_path']
+            response["answer"]["medications"][idx]["source_path"] = path
 
     return response["answer"]["medications"]
 
@@ -345,8 +346,9 @@ def get_problems(name: str, llm = ChatOpenAI(model="gpt-3.5-turbo-0125", tempera
     source_indices = [problem["source_id"] for problem in response["answer"]["problems"]]
 
     for idx, source_index in enumerate(source_indices):
-        path = response["context2"][source_index].metadata['file_path']
-        response["answer"]["problems"][idx]["source_path"] = path
+        if source_index is not None:
+            path = response["context2"][source_index].metadata['file_path']
+            response["answer"]["problems"][idx]["source_path"] = path
 
     return response["answer"]["problems"]
 
@@ -392,8 +394,9 @@ def query_database(question: str, llm = ChatOpenAI(model="gpt-3.5-turbo-0125", t
     source_indices = [cite["source_id"] for cite in response["answer"]["citations"]]
 
     for idx, source_index in enumerate(source_indices):
-        path = response["context2"][source_index].metadata['file_path']
-        response["answer"]["citations"][idx]["source_path"] = path
+        if source_index is not None:
+            path = response["context2"][source_index].metadata['file_path']
+            response["answer"]["citations"][idx]["source_path"] = path
 
     return response["answer"]
 
