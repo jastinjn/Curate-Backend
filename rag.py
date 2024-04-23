@@ -341,7 +341,7 @@ def get_problems(name: str, llm = ChatOpenAI(model="gpt-3.5-turbo-0125", tempera
         """Answer the user question based only on the given sources and knowledge graph, and cite the sources used."""
 
         problems: List[Problem] = Field(
-            ..., description="List of medical problems suffered by the patient with citations from the given sources."
+            ..., description="List of major medical problems suffered by the patient with citations from the given sources."
         )
 
     unstructured_retriever = current_app.vector.as_retriever()
@@ -490,7 +490,7 @@ def organize_documents(problems, llm = ChatOpenAI(model="gpt-3.5-turbo-0125")):
         docs.extend(loader.load())
     
     template = f"""You are a physician assistant responsible for communicating patient medical information to the doctor.
-    For the given list of medical problems experienced by the patient, categorize each document below by the medical problem the document is most related to.
+    For the given list of medical problems suffered by the patient, find all documents in the provided list of documents related to the medical problem.
     In addition, write a concise summary (no more than 3 sentences) for each medical problem based only on the documents related to it.
 
     Problems: {format_problems(problems)}
@@ -522,6 +522,8 @@ def organize_documents(problems, llm = ChatOpenAI(model="gpt-3.5-turbo-0125")):
                 paths.append(new_path)
         
         response["problems"][idx]["source_path"] = paths
+    
+    for idx in range(len(response['problems'])):
         del response["problems"][idx]["documents"]
     
     return response["problems"]
