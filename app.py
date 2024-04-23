@@ -23,6 +23,15 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'No selected file'})
     if file and allowed_file(file.filename):
+        
+        # delete previous files
+        dir = os.listdir("uploads")
+        if len(dir) != 0:
+            for old_file in dir:
+                os.remove('uploads/'+old_file)
+            for file in os.listdir("patient"):
+                os.remove('patient/'+old_file)
+
         filename = file.filename
         pdf_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(pdf_file_path)
@@ -30,21 +39,26 @@ def upload_file():
         # Split file up
         save_path = 'patient'
         splitting_character = '==='  # Change this to your desired splitting character
-        rag.split_pdf_sections(pdf_file_path, save_path, splitting_character)
+        new_files = rag.split_pdf_sections(pdf_file_path, save_path, splitting_character)
 
-        return jsonify({'message': 'File uploaded successfully', 'filename': filename})
+        return jsonify({'message': 'File uploaded successfully. Created the following files.', 'filename': filename, 'created_files': new_files})
     else:
         return jsonify({'error': 'Invalid file format. Please upload a PDF file.'})
 
 @app.route('/init', methods=['POST'])
 def init():
     
-    graph, vector_index = rag.initialize_databases('patient')
+    init_type = request.args.get('type')
+    if init_type is not None and init_type == "new":
+        graph, vector_index = rag.initialize_databases('patient')
+    else:
+        graph, vector_index = rag.initialize_from_existing()
+    
     current_app.graph = graph
     current_app.vector = vector_index
     current_app.patient = rag.get_particulars()['name']
 
-    return jsonify({'message': 'created'})
+    return jsonify({'message': f'created database for patient {current_app.patient}'})
 
 @app.route('/patient/overview', methods=['GET'])
 def overview():
@@ -63,7 +77,7 @@ def overview():
 
     return jsonify(response)
 
-@app.route('/patient/query', methods=['POST'])
+@app.route('/patient/query', methods=['GET'])
 def rag_query():
     # Check if 'question' is present in the request data
     if 'question' not in request.form:

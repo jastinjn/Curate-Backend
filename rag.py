@@ -69,6 +69,8 @@ def split_pdf_sections(pdf_file, save_path, splitting_character):
 
     # Split combined text into sections based on splitting character
     sections = combined_text.split(splitting_character)
+    
+    files_created = []
 
     # Print sections
     for i, section in enumerate(sections):
@@ -76,9 +78,12 @@ def split_pdf_sections(pdf_file, save_path, splitting_character):
         section_text = section.strip()
         output_file = save_path + "/" + section_text.split('\n', 1)[0] + ".pdf"
         save_text_to_pdf(section_text, output_file)
+        files_created.append(output_file)
 
     # Close the PDF document
     pdf_document.close()
+
+    return files_created
 
 def initialize_databases(path: str):
     
@@ -91,11 +96,12 @@ def initialize_databases(path: str):
     text_splitter = TokenTextSplitter(chunk_size=512, chunk_overlap=24)
     splits = text_splitter.split_documents(docs)
 
-    llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0125") # gpt-4-0125-preview occasionally has issues
+    llm=ChatOpenAI(temperature=0, model_name="gpt-4-turbo") # gpt-4-0125-preview occasionally has issues
     llm_transformer = LLMGraphTransformer(llm=llm)
 
     graph_documents = llm_transformer.convert_to_graph_documents(splits)
     graph = Neo4jGraph()
+    graph.query("MATCH (n) DETACH DELETE n")
     graph.add_graph_documents(
         graph_documents,
         baseEntityLabel=True,
@@ -113,6 +119,17 @@ def initialize_databases(path: str):
         embedding_node_property="embedding"
     )
     
+    return graph, vectorNeo4j
+
+def initialize_from_existing():
+    graph = Neo4jGraph()
+    vectorNeo4j = Neo4jVector.from_existing_graph(
+        OpenAIEmbeddings(),
+        search_type="hybrid",
+        node_label="Document",
+        text_node_properties=["text"],
+        embedding_node_property="embedding"
+    )
     return graph, vectorNeo4j
 
 def get_graph_chain():
@@ -415,9 +432,14 @@ def summarize_document(path: str, llm = ChatOpenAI(model="gpt-3.5-turbo-0125")):
         author: str = Field(
             ..., description="Name and title of the author or signer of the original text."
         )
+        date: str = Field(
+            ..., description="The date of the procedure or consultation described in the text."
+        )
 
     template = """You are a physician assistant responsible for communicating patient medical information to the doctor.
-    Summarize the following medical document into one paragraph, being as concise as possible. Report the name of the author who has signed off the document.
+    Summarize the following medical document into one paragraph, being as concise as possible. Report the name of the author who has signed off on the document,
+    and the date the consultation or procedure described in the document was done.
+
 
     {text}
 
