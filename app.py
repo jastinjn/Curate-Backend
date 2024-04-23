@@ -47,7 +47,6 @@ def upload_file():
 
 @app.route('/init', methods=['POST'])
 def init():
-    
     init_type = request.args.get('type')
     if init_type is not None and init_type == "new":
         graph, vector_index = rag.initialize_databases('patient')
@@ -58,22 +57,25 @@ def init():
     current_app.vector = vector_index
     current_app.patient = rag.get_particulars()['name']
 
+    if hasattr(current_app, 'problems'):
+        del current_app.problems
+
     return jsonify({'message': f'created database for patient {current_app.patient}'})
 
 @app.route('/patient/overview', methods=['GET'])
 def overview():
 
-    if not hasattr(current_app, 'overview_summary'):
-        particulars = rag.get_particulars()
-        name = particulars['name']
-        overview = rag.get_overview(name)
-        problems = rag.get_problems(name)
-        current_app.problems = problems
-        medications = rag.get_medications(name)
-        response = {'particulars': particulars, 'overview': overview, 'problems': problems, 'medications': medications}
-        current_app.overview_summary = response
-    else:
-        response = current_app.overview_summary
+    # if not hasattr(current_app, 'overview_summary'):
+    particulars = rag.get_particulars()
+    name = particulars['name']
+    overview = rag.get_overview(name)
+    problems = rag.get_problems(name)
+    current_app.problems = problems
+    medications = rag.get_medications(name)
+    response = {'particulars': particulars, 'overview': overview, 'problems': problems, 'medications': medications}
+    # current_app.overview_summary = response
+    # else:
+    #     response = current_app.overview_summary
 
     return jsonify(response)
 
@@ -99,31 +101,29 @@ def summarize_document(file_name):
     if file_name not in os.listdir('patient'):
         return jsonify({'error': 'File does not exist'}), 400
     
-    if not hasattr(current_app, file_name):
-        response = rag.summarize_document(f'patient/{file_name}')
-        setattr(current_app, file_name, response)
-    else:
-        response = getattr(current_app, file_name)
+    # if not hasattr(current_app, file_name):
+    response = rag.summarize_document(f'patient/{file_name}')
+    #     setattr(current_app, file_name, response)
+    # else:
+    #     response = getattr(current_app, file_name)
     
     return jsonify(response)
 
 @app.route('/patient/documents', methods=['GET'])
 def get_order():
 
-    if not hasattr(current_app, 'document_order'):
-        if not hasattr(current_app, 'overview_summary'):
-            problems_response = rag.get_problems(current_app.name)
-        else:
-            problems_response = current_app.overview_summary['problems']
-
-        problems = [prob['name'] for prob in problems_response]
-
-        print(problems)
-
-        response = rag.organize_documents(problems)
-        current_app.document_order = response
+    # if not hasattr(current_app, 'document_order'):
+    if not hasattr(current_app, 'problems'):
+        problems_response = rag.get_problems(current_app.name)
     else:
-        response = current_app.document_order
+        problems_response = current_app.problems
+
+    problems = [prob['name'] for prob in problems_response]
+
+    response = rag.organize_documents(problems)
+    current_app.document_order = response
+    # else:
+    #     response = current_app.document_order
 
     return jsonify(response)
 
