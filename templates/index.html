@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curate - File Upload</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="center-screen">
+    <div class="center-content">
+        <img src="assets/images/curate-logo.png" alt="Curate Logo" class="logo">
+        <h2>Select a Patient File to Upload</h2>
+        <input type="file" id="file-input" accept=".pdf" />
+        <button onclick="loadFile()">Upload</button>
+        <div id="loading" style="display:none;">Loading...</div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
