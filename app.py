@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, current_app, render_template, send_file, abort
+from flask import Flask, request, jsonify, current_app, send_file, abort
 import os
 import rag
 
@@ -13,10 +13,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route("/")
-def home():
-    #return "Hello, World!"
-    return render_template("index.html")
+# @app.route("/")
+# def home():
+#     #return "Hello, World!"
+#     return render_template("index.html")
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
