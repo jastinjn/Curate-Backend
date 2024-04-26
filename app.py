@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, current_app, send_file, abort
+from flask_cors import CORS, cross_origin
 import os
 import rag
 
@@ -6,6 +7,8 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 app = Flask(__name__)
+CORS(app)
+
 app.secret_key = "ihatestartupstudio"
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -32,7 +35,7 @@ def upload_file():
         if len(dir) != 0:
             for old_file in dir:
                 os.remove('uploads/'+old_file)
-            for file in os.listdir("patient"):
+            for old_file in os.listdir("patient"):
                 os.remove('patient/'+old_file)
 
         filename = file.filename
