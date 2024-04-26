@@ -1,8 +1,6 @@
-from flask import Flask, request, jsonify, current_app
+from flask import Flask, request, jsonify, current_app, send_file, abort
 import os
 import rag
-
-
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -93,8 +91,17 @@ def rag_query():
     return jsonify(response)
 
 @app.route('/patient/document/<file_name>', methods=['GET'])
-def summarize_document(file_name):
+def get_pdf(file_name):
+    # Check if the file exists
+    file_path = os.path.join('patient', file_name)
+    if not os.path.exists(file_path):
+        abort(404)  # Return 404 Not Found if the file does not exist
+    
+    # Return the file
+    return send_file(file_path, as_attachment=True)
 
+@app.route('/patient/document_summary/<file_name>', methods=['GET'])
+def summarize_document(file_name):
     # Check if file_name is provided
     if not file_name:
         return jsonify({'error': 'File name is missing in the request parameters'}), 400
