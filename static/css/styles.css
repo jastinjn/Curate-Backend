@@ -1,0 +1,397 @@
+body, html {
+    font-family: 'Lato', sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #e4f8fa;
+}
+
+.logo {
+    display: block;
+    max-width: 200px; /* Adjust as needed for your logo size */
+    margin: 0 auto 20px; /* Centers the logo and adds space below */
+}
+
+.logo-bar img {
+    max-height: 100%; /* or a fixed height if preferred */
+    max-width: 100%; /* adjust as needed for your actual logo size */
+    margin: auto; /* ensures no additional margin is affecting the logo */
+}
+
+.logo-bar {
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex; /* make logo-bar a flex container */
+    justify-content: center; /* center horizontally */
+    align-items: center; /* center vertically */
+    height: 50px; /* or your preferred height */
+}
+
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.center-content {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.center-content input[type="file"],
+.center-content button {
+    margin: 10px 0;
+}
+
+.center-content button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.center-content button:hover {
+    background-color: #0056b3;
+}
+
+.center-content #loading {
+    margin-top: 20px;
+}
+
+#search-container {
+    background: #e4f8fa;
+    padding: 10px;
+}
+
+.search-bar-wrapper {
+    position: relative;
+    font-size: 1rem; /* Adjust the size as needed */
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem; /* Adjust the size as needed */
+    color: #757575; /* Adjust the color as needed */
+}
+
+#search-bar {
+    width: 100%;
+    padding: 12px 10px 12px 40px; /* Adjust the padding to make the bar taller and make space for the icon */
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-style: italic; /* Makes placeholder text italic */
+    font-size: 1rem; /* Match the font size with the icon for better visual harmony */
+    background: #e4f8fa;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#search-bar::-webkit-input-placeholder { font-style: italic; }
+
+/* Firefox 19+ */
+#search-bar::-moz-placeholder { font-style: italic; }
+
+/* IE 10+ */
+#search-bar:-ms-input-placeholder { font-style: italic; }
+
+/* Firefox 18- */
+#search-bar:-moz-placeholder { font-style: italic; }
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    padding-top: 80px;
+}
+
+.sidebar {
+    width: 15%;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Align children to the start of the flex container */
+}
+
+.patient-photo img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.patient-info h1 {
+    margin-top: 0;
+}
+
+.main-content {
+    flex-grow: 1;
+    width: 80%;
+    padding: 20px;
+}
+
+.tabs {
+    padding-top: 20px;
+}
+
+.tabs button {
+    padding: 10px 15px;
+    margin-right: 20px;
+    border: none;
+    background: #d0e2e4;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    font-weight: bold;
+}
+
+.tabs button:hover, .tabs button.active {
+    background-color: #fff;
+    border-bottom: 2px solid #007bff;
+}
+
+.tab-content {
+    margin-top: 20px;
+    background: #d0e2e4;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+/* Problem tab content */
+.problems-container {
+    display: flex;
+    /* Adjust padding as needed */
+    padding: 20px;
+}
+
+.condition-tabs {
+    width: 10%;
+    background-color: #d0e2e4;
+    display: flex;
+    padding-right: 50px;
+    padding-left: 10px;
+    margin-top: 25px;
+    gap: 20px;
+    white-space: nowrap;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: flex-start; /* Align children to the start of the flex container */
+}
+
+.condition-tab {
+    /* Other styles remain the same */
+    background-color: #d0e2e4; /* Sets the background color to match the content container */
+    margin-bottom: 10px; /* Adjust this value to increase space between the buttons if needed */
+    color: #3c3c3c;
+    border: none;
+    font-size: 0.9rem;
+    /* ... */
+}
+
+.condition-tab:hover,
+.condition-tab.active {
+    /* Styles for hovered-over or selected tabs */
+    color: #007bff; /* Blue color for text when hovered over or selected */
+    /* ... other styles ... */
+}
+
+.condition-tab:last-child {
+    margin-bottom: 0; /* Removes the margin from the last tab to avoid extra space at the bottom */
+}
+
+.problem-section h2 {
+    color: #0071ea;
+}
+
+.problem-section, .timeline-section, .events-section {
+    padding-bottom: 100px;
+}
+
+.events-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.timeline div {
+    height: 20px;
+    width: 40px; /* Adjust width based on duration or other factors */
+    margin-right: 5px;
+    background-color: #007bff; /* Color code for each type of event */
+}
+
+.events-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.events-section th, .events-section td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.events-section th {
+    background-color: #f0f0f0;
+}
+
+.event-tabs {
+    display: flex;
+    padding: 10px 0;
+}
+
+.event-tab {
+    padding: 10px 15px;
+    background: #f0f0f0;
+    margin-right: 40px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.event-tab:last-child {
+    margin-right: 0;
+}
+
+.event-tab:hover,
+.event-tab.active {
+    background-color: #e0e0e0;
+    border-bottom: 2px solid #007bff;
+}
+
+.event-content-container {
+    border-top: 2px solid #ccc;
+}
+
+.event-content {
+    display: none;
+    padding: 20px;
+    background: #f9f9f9;
+}
+
+.document-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border: none;
+    background: white;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.result-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f4f4f4;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.result-button:hover {
+    background-color: #e2e2e2;
+}
+
+.result-title {
+    font-weight: bold;
+}
+
+.result-description {
+    margin: 5px 0;
+}
+
+.result-date {
+    text-align: right;
+    float: right;
+}
+
+.treatment-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f4f4f4;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.treatment-button:hover {
+    background-color: #e2e2e2;
+}
+
+.treatment-title {
+    font-weight: bold;
+}
+
+.treatment-date {
+    text-align: right;
+    float: right;
+}
+
+.note-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f4f4f4;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.note-button:hover {
+    background-color: #e2e2e2;
+}
+
+.note-title {
+    font-weight: bold;
+}
+
+.note-date {
+    text-align: right;
+    float: right;
+}
+
+.summary-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Border color */
+    text-align: left;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.summary-button:hover {
+    background-color: #e0e0e0; /* Slightly darker background on hover */
+}
+
+
