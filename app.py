@@ -85,7 +85,7 @@ def overview():
 
     return jsonify(response)
 
-@app.route('/patient/query', methods=['GET'])
+@app.route('/patient/query', methods=['POST'])
 def rag_query():
     # Check if 'question' is present in the request data
     if 'question' not in request.form:
