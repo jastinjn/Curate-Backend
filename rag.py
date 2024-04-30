@@ -23,7 +23,7 @@ from langchain_community.vectorstores import Neo4jVector
 from langchain.output_parsers.openai_tools import JsonOutputKeyToolsParser
 from flask import current_app
 
-os.environ["OPENAI_API_KEY"] = "sk-proj-7ZAIGQr5EFpi51zNM2JtT3BlbkFJ3gVlKlQsRLwAGoFNsUjS"
+os.environ["OPENAI_API_KEY"] = "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"
 os.environ["NEO4J_URI"] = "neo4j+s://4d155963.databases.neo4j.io"
 os.environ["NEO4J_USERNAME"] = "neo4j"
 os.environ["NEO4J_PASSWORD"] = "MBK5P8SQMeotDeLiNjxqyxpLAw5QC-evAY7iOhEeRv0"
