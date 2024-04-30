@@ -382,7 +382,9 @@ def query_database(question: str, llm = ChatOpenAI(model="gpt-3.5-turbo-0125", t
         )
 
     class quoted_answer(BaseModel):
-        """Answer the user question based only on the given sources and knowledge graph, and cite the sources used."""
+        """Answer the user question based only on the given sources and knowledge graph, and cite the sources used.
+        If the question is unrelated to the patient, do not answer the question.
+        """
 
         answer: str = Field(
             ...,
